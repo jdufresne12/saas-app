@@ -22,6 +22,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "./ui/textarea"
 import { subjects } from "@/constants"
+import { createCompanion } from "@/lib/actions/companion.actions"
+import { redirect } from "next/navigation"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'Companion is required' }),
@@ -50,12 +52,22 @@ const CompanionForm = () => {
     })
 
     // 2. Define a submit handler
-    const onSubmit = (values: FormOutput) => {
+    const onSubmit = async (values: FormOutput) => {
+        const companion = await createCompanion(values)
+
+        if (companion)
+            redirect(`/companions/${companion.id}`)
+        else {
+            console.log('Failed to create a companion')
+            redirect('/')
+        }
+
         console.log(values)
     }
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* Name */}
             <Controller
                 control={form.control}
                 name="name"
@@ -77,6 +89,8 @@ const CompanionForm = () => {
                     </Field>
                 )}
             />
+
+            {/* Subject */}
             <Controller
                 control={form.control}
                 name="subject"
@@ -113,6 +127,8 @@ const CompanionForm = () => {
                     </Field>
                 )}
             />
+
+            {/* Help With */}
             <Controller
                 control={form.control}
                 name="topic"
@@ -134,6 +150,8 @@ const CompanionForm = () => {
                     </Field>
                 )}
             />
+
+            {/* Voice */}
             <Controller
                 control={form.control}
                 name="voice"
@@ -154,13 +172,13 @@ const CompanionForm = () => {
                                 <SelectGroup>
                                     <SelectItem
                                         key="male"
-                                        value="male"
+                                        value="Male"
                                     >
                                         Male
                                     </SelectItem>
                                     <SelectItem
                                         key="female"
-                                        value="female"
+                                        value="Female"
                                     >
                                         Female
                                     </SelectItem>
@@ -173,6 +191,8 @@ const CompanionForm = () => {
                     </Field>
                 )}
             />
+
+            {/* Style */}
             <Controller
                 control={form.control}
                 name="style"
@@ -212,6 +232,8 @@ const CompanionForm = () => {
                     </Field>
                 )}
             />
+
+            {/* Duration */}
             <Controller
                 control={form.control}
                 name="duration"
@@ -235,6 +257,7 @@ const CompanionForm = () => {
                     </Field>
                 )}
             />
+
             <Button type="submit" className="w-full cursor-pointer">Build Your Companion</Button>
         </form>
     )
