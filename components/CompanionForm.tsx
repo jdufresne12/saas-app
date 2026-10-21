@@ -172,13 +172,13 @@ const CompanionForm = () => {
                                 <SelectGroup>
                                     <SelectItem
                                         key="male"
-                                        value="Male"
+                                        value="male"
                                     >
                                         Male
                                     </SelectItem>
                                     <SelectItem
                                         key="female"
-                                        value="Female"
+                                        value="female"
                                     >
                                         Female
                                     </SelectItem>
